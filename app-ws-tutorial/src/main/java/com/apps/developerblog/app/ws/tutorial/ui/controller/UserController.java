@@ -1,5 +1,9 @@
 package com.apps.developerblog.app.ws.tutorial.ui.controller;
 
+import com.apps.developerblog.app.ws.tutorial.ui.model.response.UserRest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,9 +17,14 @@ public class UserController {
         return String.format("Get user called page: %s, limit: %s , sort: %s", page, limit, sort);
     }
 
-    @GetMapping(path = "/{userID}")
-    public String getUser(@PathVariable String userID) {
-        return "User Called " + userID;
+    @GetMapping(path = "/{userID}",
+            produces = {
+                MediaType.APPLICATION_ATOM_XML_VALUE,
+                MediaType.APPLICATION_JSON_VALUE
+            })
+    public ResponseEntity<UserRest> getUser(@PathVariable String userID) {
+        UserRest returnUser = new UserRest("TestFirstName", "TestLastName", "test@test.com", null);
+        return new ResponseEntity<UserRest>(returnUser, HttpStatus.OK);
     }
 
     @PostMapping
